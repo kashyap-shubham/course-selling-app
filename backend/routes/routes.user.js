@@ -1,14 +1,82 @@
 const { Router } = require("express");
+const { userModel } = require("../db");
+const bcrypt = require("bcrypt");
+const jwt = requir("jsonwebtoken");
 const userRouter = Router();
 
 
-userRouter.post("/signup", (req, res) => {
+userRouter.post("/signup", async (req, res) => {
     const { firstName, lastName, password, email } = req.body;
-    // add input validation here
+
+    try {
+        const existingUser = await userModel.findOne({email});
+        if (existingUser) {
+            return res.status(400).json({
+                message: "Email already in use"
+            })
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const response = await userModel.create({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: hashedPassword
+        })
+
+        res.status(201).json({
+            message: "User Signed up Successfully"
+        })
+
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Error Signining Up"
+        })
+    }
 })
 
-userRouter.post("/signin", (req, res) => {
+userRouter.post("/signin", async (req, res) => {
+    const { email, password } = req.body;
+    
+    try {
+        const user = await userModel.findOne({email});
+        if (!user) {
+            return res.status(400).json({
+                message: "Invalid Email or password"
+            })
+        }
 
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.json(400).json({
+                message: "Invalid Email or password"
+            })
+        }
+
+        const token = jwt.sign({
+            id: user._id.toString()
+        }, process.env.USER_JWT, { expiresIn: "1d"})
+
+
+        res.status(200).json({
+            message: "Login Successful",
+            user: {
+                id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                token: token 
+            }
+        })
+        
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
 })
 
 userRouter.get("/purchases", (req, res) => {

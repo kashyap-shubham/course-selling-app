@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { userModel } = require("../db");
+const { userModel, purchaseModel, courseModel } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = requir("jsonwebtoken");
 const userRouter = Router();
@@ -79,8 +79,27 @@ userRouter.post("/signin", async (req, res) => {
     }
 })
 
-userRouter.get("/purchases", (req, res) => {
+userRouter.get("/purchases", userMiddleware, async (req, res) => {
+    try {
+        const userId = req.userId;
+        
+        const purchases = await purchaseModel.find({userId});
 
+        const courseData = await courseModel.find({
+            _id: { $in: purchasedCourseIds }
+        })
+
+        res.status(200).json({
+            message: "All purchases are",
+            courseData
+        })
+
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            messsage: "Internal Server Error"
+        })
+    }
 })
 
 

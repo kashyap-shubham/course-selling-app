@@ -79,7 +79,7 @@ userRouter.post("/signin", async (req, res) => {
     }
 })
 
-userRouter.get("/purchases", userMiddleware, async (req, res) => {
+userRouter.get("/purchased", userMiddleware, async (req, res) => {
     try {
         const userId = req.userId;
         
@@ -90,7 +90,7 @@ userRouter.get("/purchases", userMiddleware, async (req, res) => {
         })
 
         res.status(200).json({
-            message: "All purchases are",
+            message: "All purchased courses",
             courseData
         })
 

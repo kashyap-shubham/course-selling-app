@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { adminModel } = require("../db");
+const { adminModel, courseModel } = require("../db");
 const bcrypt = require("bcrypt");
 const { adminMiddleware } = require("../middlewares/adminAuth");
 const jwt = requir("jsonwebtoken");
@@ -80,15 +80,56 @@ adminRouter.post("/sigin", async (req, res) => {
 })
 
 adminRouter.post("/createCourses", adminMiddleware, async (req, res) => {
+    const { title, description, price, imageUrl } = req.body;
+    
+    const adminId = req.adminId;
 
+    try {
+        const response = await courseModel.create({
+            title: title,
+            description: description,
+            imageUrl: imageUrl,
+            price: price,
+            creatorId: adminId
+        })
+        
+        res.status(200).json({
+            message: "Course created Successfully",
+            courseId: response._id
+        })
+        
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
 })
 
 adminRouter.put("/updateCourse", adminMiddleware, async (req, res) => {
+    const { title, description, imageUrl, price, courseId } = req.body;
+    const adminId = req.adminId;
 
+    try {
+        const course = await courseModel.updateOne({
+            _id: courseId,
+            creatorId: adminId
+        }, {
+            title: title,
+            description: description,
+            imageUrl: imageUrl,
+            price: price,
+        })
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
 })
 
 adminRouter.get("/createdCourses", adminMiddleware, async (req, res) => {
-
+    
 })
 
 

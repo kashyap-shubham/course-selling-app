@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const ObjectId = mongoose.Types.ObjectId;
 
 const userSchema = new Schema({
 
@@ -11,7 +11,7 @@ const userSchema = new Schema({
         unique: true
     },
     password: String,
-    purchasedCourse: courseId
+    purchasedCourse: ObjectId
 })
 
 const adminSchema = new Schema({
@@ -22,7 +22,7 @@ const adminSchema = new Schema({
         unique: true
     },
     password: String,
-    createdCourse: courseId
+    createdCourse: ObjectId
 })
 
 const courseSchema = new Schema({
@@ -30,21 +30,20 @@ const courseSchema = new Schema({
     description: String,
     price: Number,
     imageUrl: String,
-    cretorId: adminId,
-    creatorName: String
+    cretorId: ObjectId
 })
 
 const purchaseSchema = new Schema({
     userId: {
-        type: mongoose.Types.ObjectId,
+        type: ObjectId,
         refs: users
     },
     courseId: {
-        type: mongoose.Types.ObjectId,
+        type: ObjectId,
         refs: courses
     },
     adminId: {
-        type: mongoose.Types.ObjectId,
+        type: ObjectId,
         refs: admins
     }
 })

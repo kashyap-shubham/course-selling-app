@@ -10,7 +10,7 @@ const adminMiddleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.USER_JWT);
         if (decoded) {
-            req.userId = decoded.adminId;
+            req.amdinId = decoded.adminId;
             next()
         } else {
             req.status(403).json({

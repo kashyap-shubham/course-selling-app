@@ -120,6 +120,12 @@ adminRouter.put("/updateCourse", adminMiddleware, async (req, res) => {
             imageUrl: imageUrl,
             price: price,
         })
+
+        res.status(200).json({
+            message: "Course updated successfully",
+            courseId: course._id
+        })
+
     } catch(error) {
         console.log(error);
         res.status(500).json({
@@ -129,7 +135,23 @@ adminRouter.put("/updateCourse", adminMiddleware, async (req, res) => {
 })
 
 adminRouter.get("/createdCourses", adminMiddleware, async (req, res) => {
-    
+    const adminId = req.adminId;
+
+    try {
+        const courses = await courseModel.find({
+            creatorId: adminId
+        })
+
+        res.status(200).json({
+            courses
+        })
+
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
 })
 
 

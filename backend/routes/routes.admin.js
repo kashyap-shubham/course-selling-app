@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { adminModel } = require("../db");
 const bcrypt = require("bcrypt");
+const { adminMiddleware } = require("../middlewares/adminAuth");
 const jwt = requir("jsonwebtoken");
 const adminRouter = Router();
 
@@ -78,15 +79,15 @@ adminRouter.post("/sigin", async (req, res) => {
     }
 })
 
-adminRouter.post("/createCourses", (req, res) => {
+adminRouter.post("/createCourses", adminMiddleware, async (req, res) => {
 
 })
 
-adminRouter.put("/updateCourse", (req, res) => {
+adminRouter.put("/updateCourse", adminMiddleware, async (req, res) => {
 
 })
 
-adminRouter.get("/createdCourses", (req, res) => {
+adminRouter.get("/createdCourses", adminMiddleware, async (req, res) => {
 
 })
 

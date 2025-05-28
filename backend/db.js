@@ -11,7 +11,10 @@ const userSchema = new Schema({
         unique: true
     },
     password: String,
-    purchasedCourse: ObjectId
+    purchasedCourse: {
+        type: ObjectId,
+        ref: "courses"
+    }
 })
 
 const adminSchema = new Schema({
@@ -22,7 +25,10 @@ const adminSchema = new Schema({
         unique: true
     },
     password: String,
-    createdCourse: ObjectId
+    createdCourse: {
+        type: ObjectId,
+        ref: "courses"
+    }
 })
 
 const courseSchema = new Schema({
@@ -36,15 +42,15 @@ const courseSchema = new Schema({
 const purchaseSchema = new Schema({
     userId: {
         type: ObjectId,
-        ref: users
+        ref: "users"
     },
     courseId: {
         type: ObjectId,
-        ref: courses
+        ref: "courses"
     },
     adminId: {
         type: ObjectId,
-        ref: admins
+        ref: "admins"
     }
 })
 

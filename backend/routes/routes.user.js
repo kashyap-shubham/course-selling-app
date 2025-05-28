@@ -1,8 +1,9 @@
 const { Router } = require("express");
-const { userModel, purchaseModel, courseModel } = require("../db");
+const { purchaseModel, courseModel } = require("../db");
 const bcrypt = require("bcrypt");
-const jwt = requir("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const userRouter = Router();
+const { userMiddleware } = require("../middlewares/userAuth");
 
 
 userRouter.post("/signup", async (req, res) => {

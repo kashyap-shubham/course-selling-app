@@ -15,7 +15,7 @@ app.use("/api/v1/course", courseRouter);
 
 
 const main = () => {
-    mongoose.connect(port)
+    mongoose.connect(process.env.DATABASE_URL)
     .then(() => {
         console.log("Database connected successfully");
         app.listen(port, () => {

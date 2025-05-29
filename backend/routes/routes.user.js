@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { purchaseModel, courseModel } = require("../db");
+const { purchaseModel, courseModel, userModel } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userRouter = Router();
@@ -8,6 +8,7 @@ const { userMiddleware } = require("../middlewares/userAuth");
 
 userRouter.post("/signup", async (req, res) => {
     const { firstName, lastName, password, email } = req.body;
+    console.log(req.body);
 
     try {
         const existingUser = await userModel.findOne({email});
@@ -51,7 +52,7 @@ userRouter.post("/signin", async (req, res) => {
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.json(400).json({
+            return res.status(400).json({
                 message: "Invalid Email or password"
             })
         }

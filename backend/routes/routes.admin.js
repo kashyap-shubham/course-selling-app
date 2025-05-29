@@ -9,8 +9,8 @@ adminRouter.post("/signup", async (req, res) => {
     const { firstName, lastName, password, email } = req.body;
 
     try {
-        const existingAdmin = await userModel.findOne({email});
-        if (existingUser) {
+        const existingAdmin = await adminModel.findOne({email});
+        if (existingAdmin) {
             return res.status(400).json({
                 message: "Email already in use"
             })
@@ -37,7 +37,7 @@ adminRouter.post("/signup", async (req, res) => {
     }
 })
 
-adminRouter.post("/sigin", async (req, res) => {
+adminRouter.post("/signin", async (req, res) => {
     const { email, password } = req.body;
     
     try {
@@ -83,7 +83,7 @@ adminRouter.post("/createCourses", adminMiddleware, async (req, res) => {
     const { title, description, price, imageUrl } = req.body;
     
     const adminId = req.adminId;
-
+    console.log(adminId)
     try {
         const response = await courseModel.create({
             title: title,

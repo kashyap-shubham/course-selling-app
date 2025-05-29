@@ -10,7 +10,7 @@ const userMiddleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.USER_JWT);
         if (decoded) {
-            req.userId = decoded.userId;
+            req.userId = decoded.id;
             next()
         } else {
             req.status(403).json({

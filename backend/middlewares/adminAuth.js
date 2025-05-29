@@ -8,9 +8,9 @@ const adminMiddleware = (req, res, next) => {
         })
     }
     try {
-        const decoded = jwt.verify(token, process.env.USER_JWT);
+        const decoded = jwt.verify(token, process.env.ADMIN_JWT);
         if (decoded) {
-            req.amdinId = decoded.adminId;
+            req.adminId = decoded.id;
             next()
         } else {
             req.status(403).json({

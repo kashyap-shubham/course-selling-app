@@ -10,11 +10,7 @@ const userSchema = new Schema({
         type: String,
         unique: true
     },
-    password: String,
-    purchasedCourse: {
-        type: ObjectId,
-        ref: "courses"
-    }
+    password: String
 })
 
 const adminSchema = new Schema({
